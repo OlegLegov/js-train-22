@@ -18,19 +18,61 @@ class OrderTracker {
   /**
    * Статичний метод get використовується для отримання списку замовлень
    */
+
+  // Приватне статичне поле для збереження єдиного екземпляра класу
+  static #instance = null;
+
+  // Приватне статичне поле для збереження списку замовлень
+  static #orders = [];
+
+  // Приватний конструктор, щоб запобігти створенню нових екземплярів класу
+  constructor() {
+    if (OrderTracker.#instance) {
+      throw new Error(
+        "Cannot instantiate more than one OrderTracker, use OrderTracker.create() instead."
+      );
+    }
+    OrderTracker.#instance = this;
+  }
+
+  /**
+   * Статичний метод create використовується для створення єдиного екземпляра класу
+   */
+  static create() {
+    if (!OrderTracker.#instance) {
+      OrderTracker.#instance = new OrderTracker();
+    }
+    return OrderTracker.#instance;
+  }
+
+  /**
+   * Статичний метод add використовується для додавання замовлення до списку
+   * @param {any} item - Замовлення, яке потрібно додати до списку
+   */
+  static add(item) {
+    OrderTracker.#orders.push(item);
+  }
+
+  /**
+   * Статичний метод get використовується для отримання списку замовлень
+   * @returns {Array} Список замовлень
+   */
+  static get() {
+    return OrderTracker.#orders;
+  }
 }
 console.log("Завдання 1 ====================================");
 // Після виконання розкоментуйте код нижче
 
 // Створюємо єдиний екземпляр класу OrderTracker
-// const tracker = OrderTracker.create();
+const tracker = OrderTracker.create();
 
 // Додаємо замовлення до списку
-// OrderTracker.add("Телефон");
-// OrderTracker.add("Ноутбук");
+OrderTracker.add("Телефон");
+OrderTracker.add("Ноутбук");
 
 // Отримуємо список замовлень
-// const orders = OrderTracker.get();
+const orders = OrderTracker.get();
 
 // Виводимо список замовлень в консоль
-// console.log(orders);
+console.log(orders);
